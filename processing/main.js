@@ -8,6 +8,8 @@ let title;
 let gamecontroller;
 
 let angle = 0; // angle을 여기서 전역 변수로 유지
+let collisionCount = 0;
+let isMotorActive = false;
 let goal;
 let backgroundimage;
 
@@ -22,11 +24,13 @@ var World = Matter.World;
 var Bodies = Matter.Bodies;
 var Vertices = Matter.Vertices;
 var Vector = Matter.Vector;
+// var Events = Matter.Events;
 
 let engine;
 let world;
 let runner;
 let puppy;
+let enemy;
 let elements = [];
 
 function preload() {
@@ -62,6 +66,8 @@ function setup() {
   Runner.run(engine);
 
   gamecontroller = new Game();
+
+  Matter.Events.on(engine, "collisionStart", handleCollisionStart);
 }
 
 function draw() {
@@ -81,12 +87,12 @@ function draw() {
 // keyPressed에서 포트 상태 확인
 function keyPressed() {
   if (keyCode === 82) {
-    if (isPortOpen) {
-      serial.write("MOTOR_ON\n");
-      console.log("MOTOR_ON 명령 전송");
-    } else {
-      console.error("시리얼 포트가 열려있지 않습니다.");
-    }
+    // if (isPortOpen) {
+    //   serial.write("MOTOR_ON\n");
+    //   console.log("MOTOR_ON 명령 전송");
+    // } else {
+    //   console.error("시리얼 포트가 열려있지 않습니다.");
+    // }
   }
 }
 
@@ -136,5 +142,58 @@ function gotData() {
     let pitchDeg = parseFloat(values[1]);
     let rollDeg = parseFloat(values[2]);
     angle = yawDeg * (Math.PI / 180);
+  }
+}
+
+function handleCollisionStart(event) {
+  const pairs = event.pairs;
+
+  pairs.forEach((pair) => {
+    const bodyA = pair.bodyA;
+    const bodyB = pair.bodyB;
+
+    // puppy와 ground 간 충돌 확인
+    const puppyBody =
+      bodyA.label === "puppy" ? bodyA : bodyB.label === "puppy" ? bodyB : null;
+    const groundBody = puppyBody === bodyA ? bodyB : bodyA;
+
+    if (puppyBody && groundBody.label === "ground") {
+      collisionCount++; // 충돌 카운터 증가
+      console.log(`충돌 감지! 충돌 횟수: ${collisionCount}`);
+
+      // puppy의 가속도 확인
+      const speed = puppyBody.speed;
+      console.log(`현재 가속도: ${speed}`);
+
+      // 특정 가속도 이상일 경우 진동 모터 작동
+      const SPEED_THRESHOLD = 5; // 속도 임계값
+      if (speed > SPEED_THRESHOLD && !isMotorActive) {
+        activateMotor(); // 모터 작동 함수 호출
+      }
+    }
+
+    // puppy와 enemy 간 충돌 확인
+    const enemyBody =
+      bodyA.label === "enemy" ? bodyA : bodyB.label === "enemy" ? bodyB : null;
+
+    if (puppyBody && enemyBody) {
+      console.log("puppy와 enemy가 충돌했습니다. 게임을 리셋합니다.");
+      gamecontroller.resetstage1(); // 게임 리셋 함수 호출
+    }
+  });
+}
+
+function activateMotor() {
+  if (isPortOpen) {
+    serial.write("MOTOR_ON\n");
+    isMotorActive = true; // 모터 상태 활성화
+    console.log("진동 모터 작동!");
+
+    // 200ms 후 모터 상태 초기화
+    setTimeout(() => {
+      isMotorActive = false;
+    }, 200);
+  } else {
+    console.error("시리얼 포트가 열려있지 않습니다.");
   }
 }
