@@ -48,7 +48,7 @@ class Game {
       elements.push(
         new BlockCore(
           world,
-          { x: 0, y: -325, w: 700, h: 50, color: "black" },
+          { x: 0, y: -325, w: 700, h: 50, color: "brown" },
           {
             isStatic: true,
             label: "ground",
@@ -62,7 +62,7 @@ class Game {
       elements.push(
         new BlockCore(
           world,
-          { x: 0, y: 325, w: 700, h: 50, color: "black" },
+          { x: 0, y: 325, w: 700, h: 50, color: "brown" },
           {
             isStatic: true,
             label: "ground",
@@ -76,7 +76,7 @@ class Game {
       elements.push(
         new BlockCore(
           world,
-          { x: -325, y: 0, w: 50, h: 700, color: "black" },
+          { x: -325, y: 0, w: 50, h: 700, color: "brown" },
           {
             isStatic: true,
             label: "ground",
@@ -90,7 +90,7 @@ class Game {
       elements.push(
         new BlockCore(
           world,
-          { x: 325, y: 0, w: 50, h: 700, color: "black" },
+          { x: 325, y: 0, w: 50, h: 700, color: "brown" },
           {
             isStatic: true,
             label: "ground",
@@ -106,7 +106,7 @@ class Game {
       elements.push(
         new BlockCore(
           world,
-          { x: -250, y: 50, w: 100, h: 20, color: "black" },
+          { x: -250, y: 50, w: 100, h: 20, color: "brown" },
           {
             isStatic: true,
             label: "maze",
@@ -121,7 +121,7 @@ class Game {
       elements.push(
         new BlockCore(
           world,
-          { x: -300, y: 180, w: 40, h: 20, color: "black" },
+          { x: -300, y: 180, w: 40, h: 20, color: "brown" },
           {
             isStatic: true,
             label: "maze",
@@ -135,7 +135,7 @@ class Game {
       elements.push(
         new BlockCore(
           world,
-          { x: -80, y: 40, w: 20, h: 300, color: "black" },
+          { x: -80, y: 40, w: 20, h: 300, color: "brown" },
           {
             isStatic: true,
             label: "maze",
@@ -149,7 +149,7 @@ class Game {
       elements.push(
         new BlockCore(
           world,
-          { x: -120, y: -80, w: 100, h: 20, color: "black" },
+          { x: -120, y: -80, w: 100, h: 20, color: "brown" },
           {
             isStatic: true,
             label: "maze",
@@ -163,7 +163,7 @@ class Game {
       elements.push(
         new BlockCore(
           world,
-          { x: -160, y: -140, w: 20, h: 130, color: "black" },
+          { x: -160, y: -140, w: 20, h: 130, color: "brown" },
           {
             isStatic: true,
             label: "maze",
@@ -177,7 +177,7 @@ class Game {
       elements.push(
         new BlockCore(
           world,
-          { x: -80, y: -200, w: 280, h: 20, color: "black" },
+          { x: -80, y: -200, w: 280, h: 20, color: "brown" },
           {
             isStatic: true,
             label: "maze",
@@ -191,7 +191,7 @@ class Game {
       elements.push(
         new BlockCore(
           world,
-          { x: 50, y: -260, w: 20, h: 130, color: "black" },
+          { x: 50, y: -260, w: 20, h: 130, color: "brown" },
           {
             isStatic: true,
             label: "maze",
@@ -205,7 +205,7 @@ class Game {
       elements.push(
         new BlockCore(
           world,
-          { x: 50, y: 120, w: 20, h: 380, color: "black" },
+          { x: 50, y: 120, w: 20, h: 380, color: "brown" },
           {
             isStatic: true,
             label: "maze",
@@ -219,7 +219,7 @@ class Game {
       elements.push(
         new BlockCore(
           world,
-          { x: -120, y: 180, w: 80, h: 20, color: "black" },
+          { x: -120, y: 180, w: 80, h: 20, color: "brown" },
           {
             isStatic: true,
             label: "maze",
@@ -233,7 +233,7 @@ class Game {
       elements.push(
         new BlockCore(
           world,
-          { x: 90, y: -80, w: 100, h: 20, color: "black" },
+          { x: 90, y: -80, w: 100, h: 20, color: "brown" },
           {
             isStatic: true,
             label: "maze",
@@ -247,7 +247,7 @@ class Game {
       elements.push(
         new BlockCore(
           world,
-          { x: 250, y: 50, w: 120, h: 20, color: "black" },
+          { x: 250, y: 50, w: 120, h: 20, color: "brown" },
           {
             isStatic: true,
             label: "maze",
@@ -261,7 +261,7 @@ class Game {
       elements.push(
         new BlockCore(
           world,
-          { x: 100, y: 180, w: 120, h: 20, color: "black" },
+          { x: 100, y: 180, w: 120, h: 20, color: "brown" },
           {
             isStatic: true,
             label: "maze",
@@ -276,15 +276,12 @@ class Game {
 
     this.c1 = false;
 
-    // calculateAngle();
-    angle = map(latestData, 0, 1023, -PI, PI);
-
     push();
     translate(width / 2, height / 2);
     rotate(angle);
 
-    imageMode(CENTER);
-    image(backgroundimage, 0, 0, 2048, 2048);
+    // imageMode(CENTER);
+    // image(backgroundimage, 0, 0, 2048, 2048);
 
     fill(255);
     rectMode(CENTER);
@@ -292,12 +289,12 @@ class Game {
 
     image(goal, 100, 250, 50, 50);
 
-    fill(0);
-    textFont(font);
-    textSize(16);
-    textAlign(CENTER, CENTER);
-    text("벌써 64동까지 왔어!", -200, 80);
-    text("길 찾는 걸 도와줘", -200, 100);
+    // fill(0);
+    // textFont(font);
+    // textSize(16);
+    // textAlign(CENTER, CENTER);
+    // text("벌써 64동까지 왔어!", -200, 80);
+    // text("길 찾는 걸 도와줘", -200, 100);
 
     elements.forEach((element) => element.draw());
 

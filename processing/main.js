@@ -7,7 +7,7 @@ let font;
 let title;
 let gamecontroller;
 
-let angle = 0;
+let angle = 0; // angle을 여기서 전역 변수로 유지
 let goal;
 let backgroundimage;
 
@@ -78,25 +78,15 @@ function draw() {
   }
 }
 
-// function scrollEndless(point) {
-//     off = { x: Math.min(Math.max(0, point.x - windowWidth / 2), dim.w -  windowWidth), y: Math.min(Math.max(0, point.y - windowHeight / 2), dim.h -  windowHeight) };
-//     canvasElem.style.left = Math.round(off.x) + 'px';
-//     canvasElem.style.top = Math.round(off.y) + 'px';
-//     translate(-off.x, -off.y);
-//     window.scrollTo(off.x, off.y);
-//   }
-
-// function keyPressed(event) {
+// keyPressed에서 포트 상태 확인
 function keyPressed() {
   if (keyCode === 82) {
-    // switch (gamecontroller.stage) {
-    //   case 1:
-    //     gamecontroller.resetstage1();
-    //     break;
-    //   case 2:
-    //     gamecontroller.resetstage2();
-    //     break;
-    // }
+    if (isPortOpen) {
+      serial.write("MOTOR_ON\n");
+      console.log("MOTOR_ON 명령 전송");
+    } else {
+      console.error("시리얼 포트가 열려있지 않습니다.");
+    }
   }
 }
 
@@ -107,17 +97,25 @@ function serverConnected() {
 function gotList(ports) {
   console.log("사용 가능한 시리얼 포트:", ports);
   if (ports.length > 0) {
-    serial.openPort("/dev/tty.usbserial-A50285BI", { baudRate: 9600 });
+    // 여기서 사용 가능한 포트로 변경하세요.
+    // 실제 환경에 맞는 포트 이름 사용 필수
+    serial.openPort("/dev/tty.usbserial-A50285BI", { baudRate: 115200 });
   } else {
     console.error("사용 가능한 포트가 없습니다.");
   }
 }
 
+let isPortOpen = false; // 포트 상태를 추적하는 변수
+
+// 포트가 열렸을 때 상태 업데이트
 function gotOpen() {
+  isPortOpen = true;
   console.log("시리얼 포트가 열렸습니다.");
 }
 
+// 포트가 닫혔을 때 상태 업데이트
 function gotClose() {
+  isPortOpen = false;
   console.log("시리얼 포트가 닫혔습니다.");
 }
 
@@ -126,9 +124,17 @@ function gotError(theerror) {
 }
 
 function gotData() {
-  let currentString = serial.readLine(); // 한 줄씩 데이터 읽기
-  trim(currentString); // 공백 제거
-  if (!currentString) return; // 빈 문자열 무시
-  console.log(currentString); // 콘솔에 출력
-  latestData = currentString; // 받은 데이터를 저장
+  let currentString = serial.readLine();
+  currentString = currentString.trim();
+  if (!currentString) return;
+  console.log(currentString);
+
+  // yaw,pitch,roll 데이터 파싱 (이미 구현된 부분이라 가정)
+  let values = currentString.split(",");
+  if (values.length === 3) {
+    let yawDeg = parseFloat(values[0]);
+    let pitchDeg = parseFloat(values[1]);
+    let rollDeg = parseFloat(values[2]);
+    angle = yawDeg * (Math.PI / 180);
+  }
 }
