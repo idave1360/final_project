@@ -30,6 +30,7 @@ let engine;
 let world;
 let runner;
 let puppy;
+let enemy;
 let elements = [];
 
 function preload() {
@@ -169,6 +170,15 @@ function handleCollisionStart(event) {
       if (speed > SPEED_THRESHOLD && !isMotorActive) {
         activateMotor(); // 모터 작동 함수 호출
       }
+    }
+
+    // puppy와 enemy 간 충돌 확인
+    const enemyBody =
+      bodyA.label === "enemy" ? bodyA : bodyB.label === "enemy" ? bodyB : null;
+
+    if (puppyBody && enemyBody) {
+      console.log("puppy와 enemy가 충돌했습니다. 게임을 리셋합니다.");
+      gamecontroller.resetstage1(); // 게임 리셋 함수 호출
     }
   });
 }

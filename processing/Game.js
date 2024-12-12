@@ -44,6 +44,25 @@ class Game {
       );
       elements.push(puppy);
 
+      enemy = new Block(
+        world,
+        {
+          x: -50,
+          y: -250,
+          w: 70,
+          h: 70,
+          image: loadImage("assets/character/enemy.png"),
+        },
+        {
+          label: "enemy",
+          density: 0.004,
+          restitution: 0.5,
+          friction: 0.0,
+          frictionAir: 0.0,
+        }
+      );
+      elements.push(enemy);
+
       // boundary
       elements.push(
         new BlockCore(
