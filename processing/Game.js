@@ -1,28 +1,31 @@
 class Game {
   constructor() {
-    this.stage = 1;
+    this.stage = 2;
     this.c1 = true;
+    this.c2 = true;
   }
 
-  resetstage1() {
+  resetstage2() {
     World.clear(world);
     elements = [];
-    this.c1 = true;
+    this.c2 = true;
   }
 
   stageclear() {
     World.clear(world);
     elements = [];
-    this.stage = 0;
-  }
-
-  stage0() {
-    if (this.c0) {
-    }
+    this.stage += 1;
   }
 
   stage1() {
     if (this.c1) {
+      World.clear(world);
+      elements = [];
+    }
+  }
+
+  stage2() {
+    if (this.c2) {
       dim = { w: 720, h: height };
 
       puppy = new Block(
@@ -293,7 +296,7 @@ class Game {
       );
     }
 
-    this.c1 = false;
+    this.c2 = false;
 
     push();
     translate(width / 2, height / 2);
@@ -306,14 +309,7 @@ class Game {
     rectMode(CENTER);
     rect(0, 0, 700, 700);
 
-    image(goal, 100, 250, 50, 50);
-
-    // fill(0);
-    // textFont(font);
-    // textSize(16);
-    // textAlign(CENTER, CENTER);
-    // text("벌써 64동까지 왔어!", -200, 80);
-    // text("길 찾는 걸 도와줘", -200, 100);
+    image(goal, 80, 220, 50, 50);
 
     elements.forEach((element) => element.draw());
 
@@ -326,9 +322,11 @@ class Game {
       puppy.body.position.y > 190 &&
       puppy.body.position.y < 310
     ) {
-      this.resetstage1();
+      this.resetstage2();
     }
 
     pop();
   }
+
+  stage3() {}
 }
