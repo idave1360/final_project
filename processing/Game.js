@@ -109,7 +109,7 @@ class Game {
           { x: -250, y: 50, w: 100, h: 20, color: "brown" },
           {
             isStatic: true,
-            label: "maze",
+            label: "ground",
             density: 0.004,
             restitution: 0.5,
             friction: 0.0,
@@ -124,7 +124,7 @@ class Game {
           { x: -300, y: 180, w: 40, h: 20, color: "brown" },
           {
             isStatic: true,
-            label: "maze",
+            label: "ground",
             density: 0.004,
             restitution: 0.5,
             friction: 0.0,
@@ -138,7 +138,7 @@ class Game {
           { x: -80, y: 40, w: 20, h: 300, color: "brown" },
           {
             isStatic: true,
-            label: "maze",
+            label: "ground",
             density: 0.004,
             restitution: 0.5,
             friction: 0.0,
@@ -152,7 +152,7 @@ class Game {
           { x: -120, y: -80, w: 100, h: 20, color: "brown" },
           {
             isStatic: true,
-            label: "maze",
+            label: "ground",
             density: 0.004,
             restitution: 0.5,
             friction: 0.0,
@@ -166,7 +166,7 @@ class Game {
           { x: -160, y: -140, w: 20, h: 130, color: "brown" },
           {
             isStatic: true,
-            label: "maze",
+            label: "ground",
             density: 0.004,
             restitution: 0.5,
             friction: 0.0,
@@ -180,7 +180,7 @@ class Game {
           { x: -80, y: -200, w: 280, h: 20, color: "brown" },
           {
             isStatic: true,
-            label: "maze",
+            label: "ground",
             density: 0.004,
             restitution: 0.5,
             friction: 0.0,
@@ -194,7 +194,7 @@ class Game {
           { x: 50, y: -260, w: 20, h: 130, color: "brown" },
           {
             isStatic: true,
-            label: "maze",
+            label: "ground",
             density: 0.004,
             restitution: 0.5,
             friction: 0.0,
@@ -208,7 +208,7 @@ class Game {
           { x: 50, y: 120, w: 20, h: 380, color: "brown" },
           {
             isStatic: true,
-            label: "maze",
+            label: "ground",
             density: 0.004,
             restitution: 0.5,
             friction: 0.0,
@@ -222,7 +222,7 @@ class Game {
           { x: -120, y: 180, w: 80, h: 20, color: "brown" },
           {
             isStatic: true,
-            label: "maze",
+            label: "ground",
             density: 0.004,
             restitution: 0.5,
             friction: 0.0,
@@ -236,7 +236,7 @@ class Game {
           { x: 90, y: -80, w: 100, h: 20, color: "brown" },
           {
             isStatic: true,
-            label: "maze",
+            label: "ground",
             density: 0.004,
             restitution: 0.5,
             friction: 0.0,
@@ -250,7 +250,7 @@ class Game {
           { x: 250, y: 50, w: 120, h: 20, color: "brown" },
           {
             isStatic: true,
-            label: "maze",
+            label: "ground",
             density: 0.004,
             restitution: 0.5,
             friction: 0.0,
@@ -264,7 +264,7 @@ class Game {
           { x: 100, y: 180, w: 120, h: 20, color: "brown" },
           {
             isStatic: true,
-            label: "maze",
+            label: "ground",
             density: 0.004,
             restitution: 0.5,
             friction: 0.0,
