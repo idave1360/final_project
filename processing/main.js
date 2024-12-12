@@ -13,6 +13,13 @@ let isMotorActive = false;
 let goal;
 let backgroundimage;
 
+// opencv
+let video;
+let faceCascade;
+let faceDetected = false;
+let lastFaceDetectedTime = 0;
+const FACE_DETECTION_TIMEOUT = 3000; // 3초 미검출 시 리셋
+
 // serialport
 let serial;
 let latestData = "";
@@ -68,19 +75,60 @@ function setup() {
   gamecontroller = new Game();
 
   Matter.Events.on(engine, "collisionStart", handleCollisionStart);
+
+  dim = { w: 720, h: height };
+
+  // OpenCV 설정
+  cv["onRuntimeInitialized"] = () => {
+    // 비디오 캡쳐 설정
+    video = createCapture(VIDEO);
+    video.size(320, 240);
+    video.hide();
+
+    let cascadeFile = "haarcascade_frontalface_default.xml";
+    fetch(cascadeFile)
+      .then((response) => response.arrayBuffer())
+      .then((buffer) => {
+        let data = new Uint8Array(buffer);
+        cv.FS_createDataFile("/", cascadeFile, data, true, false, false);
+        faceCascade = new cv.CascadeClassifier();
+        faceCascade.load(cascadeFile);
+        // 얼굴 인식 주기적 수행
+        setInterval(detectFace, 100);
+      })
+      .catch((err) => console.error("Haarcascade 로드 실패:", err));
+  };
 }
 
 function draw() {
   clear();
 
-  switch (gamecontroller.stage) {
-    case 0:
-      gamecontroller.stage0();
-      break;
+  // 마지막으로 얼굴 감지된 시간과 현재 시간 비교
+  if (millis() - lastFaceDetectedTime <= FACE_DETECTION_TIMEOUT) {
+    // 3초 내에 얼굴 감지 기록이 있으면 faceDetected=true
+    faceDetected = true;
+  } else {
+    // 3초 이상 감지 기록이 없으면 faceDetected=false 및 초기화
+    faceDetected = false;
+    // gamecontroller.c1 = true;
+    // gamecontroller.stage = 2;
+    gamecontroller.resetstage2();
+  }
 
-    case 1:
-      gamecontroller.stage1();
-      break;
+  if (faceDetected) {
+    switch (gamecontroller.stage) {
+      case 1:
+        gamecontroller.stage1();
+        break;
+      case 2:
+        gamecontroller.stage2();
+        break;
+      case 3:
+        gamecontroller.stage3();
+        break;
+    }
+  } else {
+    image(title, width / 4, height / 4, width / 2, height / 2);
   }
 }
 
@@ -103,8 +151,6 @@ function serverConnected() {
 function gotList(ports) {
   console.log("사용 가능한 시리얼 포트:", ports);
   if (ports.length > 0) {
-    // 여기서 사용 가능한 포트로 변경하세요.
-    // 실제 환경에 맞는 포트 이름 사용 필수
     serial.openPort("/dev/tty.usbserial-A50285BI", { baudRate: 115200 });
   } else {
     console.error("사용 가능한 포트가 없습니다.");
@@ -135,7 +181,7 @@ function gotData() {
   if (!currentString) return;
   console.log(currentString);
 
-  // yaw,pitch,roll 데이터 파싱 (이미 구현된 부분이라 가정)
+  // yaw,pitch,roll 데이터 파싱
   let values = currentString.split(",");
   if (values.length === 3) {
     let yawDeg = parseFloat(values[0]);
@@ -178,7 +224,7 @@ function handleCollisionStart(event) {
 
     if (puppyBody && enemyBody) {
       console.log("puppy와 enemy가 충돌했습니다. 게임을 리셋합니다.");
-      gamecontroller.resetstage1(); // 게임 리셋 함수 호출
+      gamecontroller.resetstage2(); // 게임 리셋 함수 호출
     }
   });
 }
@@ -190,10 +236,4 @@ function activateMotor() {
     console.log("진동 모터 작동!");
 
     // 200ms 후 모터 상태 초기화
-    setTimeout(() => {
-      isMotorActive = false;
-    }, 200);
-  } else {
-    console.error("시리얼 포트가 열려있지 않습니다.");
-  }
-}
+    setTimeo
